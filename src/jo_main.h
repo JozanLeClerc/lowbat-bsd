@@ -17,5 +17,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <inttypes.h>
 
 #endif

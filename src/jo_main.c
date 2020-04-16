@@ -21,13 +21,11 @@
 int
 main(void)
 {
-	char	*status;
+	int8_t	status;
 
-	if (!(status = jo_f_status())) {
+	if ((status = jo_f_status()) < 0) {
 		return (JO_RET_RD_FAILED);
 	}
-	printf("status: %s\n", status);
-	free(status);
-	status = NULL;
+	printf("status: %d\n", status);
 	return (JO_RET_FINE);
 }
