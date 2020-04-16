@@ -19,7 +19,6 @@
 
 section .text
 	extern system
-	extern atoi
 	global jo_f_status
 
 jo_f_status:
@@ -41,8 +40,8 @@ jo_f_status:
 	mov		rdi, rax
 	mov		rax, 0x6
 	syscall
-	mov		rdi, rsi
-	call	atoi
+	movsx	rax, byte [rsi + 0x0]
+	sub		rax, 48
 	retq
 
 err:
