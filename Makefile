@@ -20,6 +20,6 @@ CFLAGS		+= -pedantic
 ASM			= nasm
 ASMFLAGS	= -f
 ASMARCH		= elf64_fbsd
-
+# ============================================ RULES ============================================= #
 all:
 	${CC}
