@@ -128,3 +128,4 @@ flycheck_*.el
 *.core
 .depend
 *.tmp
+lowbat

@@ -41,7 +41,7 @@ jo_f_status:
 	mov		rax, 0x6
 	syscall
 	movsx	rax, byte [rsi + 0x0]
-	sub		rax, 48
+	sub		rax, 0x30			; 48
 	retq
 
 err:
