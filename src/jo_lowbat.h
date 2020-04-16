@@ -22,5 +22,6 @@ enum
 };
 
 int8_t	jo_f_status(void);
+int8_t	jo_f_percent(void);
 
 #endif

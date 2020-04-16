@@ -22,10 +22,14 @@ int
 main(void)
 {
 	int8_t	status;
+	int8_t	percent;
 
 	if ((status = jo_f_status()) < 0) {
 		return (JO_RET_RD_FAILED);
 	}
-	printf("status: %d\n", status);
+	if ((percent = jo_f_percent()) < 0) {
+		return (JO_RET_RD_FAILED);
+	}
+	printf("status: %hhd, %hhd%%\n", status, percent);
 	return (JO_RET_FINE);
 }
