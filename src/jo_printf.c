@@ -4,5 +4,6 @@
 void
 jo_printf(void)
 {
+
 	printf("Hey!\n");
 }

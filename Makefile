@@ -2,14 +2,13 @@ default: all
 
 SHELL		:= /bin/sh
 # ============================================ DIRS ============================================== #
-SRCS_DIR	= src
-ASRCS_DIR	= asm
-# ------------------------------------------------------------------------------------------------ #
-OBJS_DIR	= cobj
-AOBJS_DIR	= asmobj
+C_SRCS_DIR	= src
+A_SRCS_DIR	= asm
 # =========================================== FILES ============================================== #
-SRCS		 = ${SRCS_DIR}/jo_main.c
-SRCS		+= ${SRCS_DIR}/jo_printf.c
+C_SRCS		 = ${C_SRCS_DIR}/jo_main.c
+C_SRCS		+= ${C_SRCS_DIR}/jo_printf.c
+# ------------------------------------------------------------------------------------------------ #
+C_OBJS		= ${C_SRCS:.c=.o}
 # ========================================== COMPILER ============================================ #
 CC			= clang
 # ------------------------------------------------------------------------------------------------ #
@@ -18,41 +17,51 @@ CFLAGS		+= -Wall
 CFLAGS		+= -Wextra
 CFLAGS		+= -Werror
 CFLAGS		+= -pedantic
-# CFLAGS		+= -O2 -pipe
+CFLAGS		+= ${DEBUG}
+# CFLAGS		+= ${OPTI}
 # ------------------------------------------------------------------------------------------------ #
-NAME		= lowbat
+OPTI		= -O2 -pipe
+DEBUG		= -glldb
+# ------------------------------------------------------------------------------------------------ #
+TARGET		= lowbat
 # ========================================== ASSEMBLER =========================================== #
 ASM			= nasm
 ASMFLAGS	= -f
 ASMARCH		= elf64_fbsd
 # ============================================ UNIX ============================================== #
-RM			= rm -rf
+RM			= rm -f
 MKDIR		= mkdir -p
 CP			= cp
 MV			= mv
-AWK			= awk -F
 SED			= sed
 # ============================================ RULES ============================================= #
 
-depend:
-	${CC} -I${SRCS_DIR}/ -E -MM ${SRCS} > .depend
-	${SED} 's/^/${OBJS_DIR}\//' .depend > .depend.tmp
-	${MV} .depend.tmp .depend
-	${MKDIR} ${OBJS_DIR}
+.SUFFIXES: .c .o
 
-all: depend
-# .include "./.depend"
+.c.o:
+	${CC} -c ${CFLAGS} -I${C_SRCS_DIR} ${.IMPSRC} -o ${.TARGET}
+
+${TARGET}: ${C_OBJS}
+	${CC} ${CFLAGS} -I${C_SRCS_DIR} -o ${.TARGET} ${.ALLSRC}
+
+depend:
+	${CC} -I${C_SRCS_DIR} -E -MM ${C_SRCS} > .depend
+	${SED} 's/^/${C_SRCS_DIR}\//' .depend > .depend.tmp
+	${MV} .depend.tmp .depend
+
+all: depend ${TARGET}
 
 clean:
-	${RM} ${OBJS_DIR}
-	${RM} ${AOBJS_DIR}
-	${RM} ${NAME}.core
+	${RM} ${C_OBJS}
+	${RM} ${TARGET}.core
 	${RM} .depend
 	${RM} .depend.tmp
 
 fclean: clean
-	${RM} ${NAME}
+	${RM} ${TARGET}
 
 re: fclean all
 
-.PHONY: all clean fclean re depend config
+.PHONY: all clean fclean re depend
+
+-include "./.depend"
