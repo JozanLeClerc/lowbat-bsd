@@ -5,7 +5,7 @@ SHELL		:= /bin/sh
 SRCS_DIR	= src
 ASRCS_DIR	= asm
 # ------------------------------------------------------------------------------------------------ #
-OBJS_DIR	= obj
+OBJS_DIR	= cobj
 AOBJS_DIR	= asmobj
 # =========================================== FILES ============================================== #
 SRCS		 = ${SRCS_DIR}/jo_main.c
@@ -27,24 +27,21 @@ ASMFLAGS	= -f
 ASMARCH		= elf64_fbsd
 # ============================================ UNIX ============================================== #
 RM			= rm -rf
-MKDIR		= mkdir
+MKDIR		= mkdir -p
 CP			= cp
 MV			= mv
 AWK			= awk -F
 SED			= sed
 # ============================================ RULES ============================================= #
-# .include "./.depend"
 
 depend:
-	pwd
 	${CC} -I${SRCS_DIR}/ -E -MM ${SRCS} > .depend
-
-config:
-	${MKDIR} ${OBJS_DIR}
 	${SED} 's/^/${OBJS_DIR}\//' .depend > .depend.tmp
 	${MV} .depend.tmp .depend
+	${MKDIR} ${OBJS_DIR}
 
-all: depend config
+all: depend
+# .include "./.depend"
 
 clean:
 	${RM} ${OBJS_DIR}
