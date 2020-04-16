@@ -1,33 +1,23 @@
 /****************************************************************************************/
 /*                                                                                      */
-/*  File     : jo_main.c                                                  /_________/   */
+/*  File     : jo_lowbat.h                                                /_________/   */
 /*  Author   : Joe                                                              |       */
 /*  Date     : 04/2020                                                          |       */
-/*  Info     : The main                                                         |       */
+/*  Info     : The general header                                               |       */
 /*                                                                      /       |       */
 /*                                                                      \       /       */
 /*                                                                       \_____/        */
 /*                                                                                      */
 /****************************************************************************************/
 
-#include <jo_main.h>
+#ifndef JO_LOWBAT_H
+#define JO_LOWBAT_H
 
-/*
-** Files prefixes
-** --------------
-** f: fetch
-*/
-
-int
-main(void)
+enum
 {
-	char	*status;
+	JO_RET_FINE,
+	JO_RET_RD_FAILED
+};
+char	*jo_f_status(void);
 
-	if (!(status = jo_f_status())) {
-		return (JO_RET_RD_FAILED);
-	}
-	printf("status: %s\n", status);
-	free(status);
-	status = NULL;
-	return (JO_RET_FINE);
-}
+#endif
