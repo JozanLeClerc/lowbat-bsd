@@ -1,3 +1,15 @@
+##########################################################################################
+#*                                                                                      *#
+#*  File     : Makefile                                                   /_________/   *#
+#*  Author   : Joe                                                              |       *#
+#*  Date     : 04/2020                                                          |       *#
+#*  Info     : BSD Makefile                                                     |       *#
+#*                                                                      /       |       *#
+#*                                                                      \       /       *#
+#*                                                                       \_____/        *#
+#*                                                                                      *#
+##########################################################################################
+
 default: all
 
 SHELL		:= /bin/sh
@@ -61,14 +73,7 @@ depend:
 all: depend ${TARGET}
 
 clean:
-	${RM} ${C_OBJS}
-	${RM} ${A_OBJS}
-	${RM} ${TARGET}.core
-	${RM} .depend
-	${RM} .depend.tmp
-
-fclean: clean
-	${RM} ${TARGET}
+	${RM} ${C_OBJS} ${A_OBJS} ${TARGET}.core .depend .depend.tmp ${TARGET}
 
 re: fclean all
 

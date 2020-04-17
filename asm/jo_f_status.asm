@@ -32,20 +32,17 @@ jo_f_status:
 	mov		rdi, rax
 	mov		rsi, buff
 	mov		rdx, 0x1
-	push	rax
 	mov		rax, 0x3
 	syscall
 	jc		err
-	pop		rax
-	mov		rdi, rax
 	mov		rax, 0x6
 	syscall
 	movsx	rax, byte [rsi + 0x0]
-	sub		rax, 0x30			; 48
+	sub		rax, 0x30			  ; 48
 	retq
 
 err:
-	mov		rax, 0xff
+	mov		rax, 0xfe
 	retq
 
 section .data
