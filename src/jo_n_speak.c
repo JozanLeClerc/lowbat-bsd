@@ -1,37 +1,29 @@
 /****************************************************************************************/
 /*                                                                                      */
-/*  File     : jo_main.c                                                  /_________/   */
+/*  File     : jo_n_speak.c                                               /_________/   */
 /*  Author   : Joe                                                              |       */
 /*  Date     : 04/2020                                                          |       */
-/*  Info     : The main                                                         |       */
+/*  Info     : Uses espeak lib to speak                                         |       */
 /*                                                                      /       |       */
 /*                                                                      \       /       */
 /*                                                                       \_____/        */
 /*                                                                                      */
 /****************************************************************************************/
 
-#include <jo_main.h>
+#include <jo_n_speak.h>
 
-/*
-** Files prefixes
-** --------------
-** f: fetch
-** n: notify
-*/
-
-int
-main(void)
+void
+jo_n_speak(const char *msg)
 {
-	int8_t	status;
-	int8_t	percent;
-
-	if ((status = jo_f_status()) == -2) {
-		return (JO_RET_RD_FAILED);
-	}
-	if ((percent = jo_f_percent()) == -3) {
-		return (JO_RET_RD_FAILED);
-	}
-	printf("status: %hhd, %hhd%%\n", status, percent);
-	/* ESPEAK */
-	return (JO_RET_FINE);
+	espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, 0x0, 0);
+	espeak_Synth(msg,
+				 strlen(msg),
+				 0,
+				 POS_CHARACTER,
+				 0,
+				 espeakCHARS_UTF8 | espeakENDPAUSE,
+				 0x0,
+				 0x0);
+	espeak_Synchronize();
+	espeak_Terminate();
 }

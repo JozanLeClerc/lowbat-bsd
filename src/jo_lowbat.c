@@ -1,33 +1,45 @@
 /****************************************************************************************/
 /*                                                                                      */
-/*  File     : jo_lowbat.h                                                /_________/   */
+/*  File     : jo_lowbat.c                                                /_________/   */
 /*  Author   : Joe                                                              |       */
 /*  Date     : 04/2020                                                          |       */
-/*  Info     : The general header                                               |       */
+/*  Info     : The main                                                         |       */
 /*                                                                      /       |       */
 /*                                                                      \       /       */
 /*                                                                       \_____/        */
 /*                                                                                      */
 /****************************************************************************************/
 
-#ifndef JO_LOWBAT_H
-#define JO_LOWBAT_H
-
 #include <jo_lowbat.h>
-#include <jo_n_speak.h>
-#include <jo_n_notify.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <stdint.h>
+#include <libnotify/notify.h>
 
-enum
+/*
+** Files prefixes
+** --------------
+** f: fetch
+** n: notify
+*/
+
+int
+main(
+	int argc,
+	const char *argv[]
+	)
 {
-	JO_RET_FINE,
-	JO_RET_RD_FAILED
-};
+	int8_t	status;
+	int8_t	percent;
 
-int8_t	jo_f_status(void);
-int8_t	jo_f_percent(void);
-
-#endif
+	(void)argc;
+	(void)argv;
+	if ((status = jo_f_status()) == -2) {
+		return (JO_RET_RD_FAILED);
+	}
+	if ((percent = jo_f_percent()) == -3) {
+		return (JO_RET_RD_FAILED);
+	}
+	printf("status: %hhd, %hhd%%\n", status, percent);
+	/* NOTIFY-SEND */
+	jo_n_notify("VEGA: Yo", "Welcome", NOTIFY_URGENCY_LOW, 5000);
+	jo_n_speak("Heya!");
+	return (JO_RET_FINE);
+}

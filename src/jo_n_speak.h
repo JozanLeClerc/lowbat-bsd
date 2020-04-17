@@ -1,22 +1,21 @@
 /****************************************************************************************/
 /*                                                                                      */
-/*  File     : jo_main.h                                                  /_________/   */
+/*  File     : jo_n_speak.h                                               /_________/   */
 /*  Author   : Joe                                                              |       */
 /*  Date     : 04/2020                                                          |       */
-/*                                                                              |       */
+/*  Info     : Use espeak lib to speak                                          |       */
 /*                                                                      /       |       */
 /*                                                                      \       /       */
 /*                                                                       \_____/        */
 /*                                                                                      */
 /****************************************************************************************/
 
-#ifndef JO_MAIN_H
-#define JO_MAIN_H
+#ifndef JO_N_SPEAK_H
+#define JO_N_SPEAK_H
 
-#include <jo_lowbat.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <inttypes.h>
+#include <espeak/speak_lib.h>
+#include <string.h>
+
+void	jo_n_speak(const char *);
 
 #endif

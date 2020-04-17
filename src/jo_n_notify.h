@@ -1,33 +1,27 @@
 /****************************************************************************************/
 /*                                                                                      */
-/*  File     : jo_lowbat.h                                                /_________/   */
+/*  File     : jo_n_notify.h                                              /_________/   */
 /*  Author   : Joe                                                              |       */
 /*  Date     : 04/2020                                                          |       */
-/*  Info     : The general header                                               |       */
+/*  Info     : Uses libnotify lib to notify                                     |       */
 /*                                                                      /       |       */
 /*                                                                      \       /       */
 /*                                                                       \_____/        */
 /*                                                                                      */
 /****************************************************************************************/
 
-#ifndef JO_LOWBAT_H
-#define JO_LOWBAT_H
+#ifndef JO_N_NOTIFY_H
+#define JO_N_NOTIFY_H
 
-#include <jo_lowbat.h>
-#include <jo_n_speak.h>
-#include <jo_n_notify.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <libnotify/notify.h>
 #include <stddef.h>
 #include <stdint.h>
 
-enum
-{
-	JO_RET_FINE,
-	JO_RET_RD_FAILED
-};
-
-int8_t	jo_f_status(void);
-int8_t	jo_f_percent(void);
+void	jo_n_notify(
+	const char[],
+	const char[],
+	NotifyUrgency,	
+	int32_t
+	);
 
 #endif
