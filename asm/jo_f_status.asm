@@ -3,7 +3,7 @@
 ;;  File      : jo_f_status.asm                                           /_________/   ;;
 ;;  Author    : Joe                                                             |       ;;
 ;;  Date      : 04/2020                                                         |       ;;
-;;  Info      : gets batt status                                                |       ;;
+;;  Info      : Gets batt status                                                |       ;;
 ;;                                                                      /       |       ;;
 ;;                                                                      \       /       ;;
 ;;                                                                       \_____/        ;;

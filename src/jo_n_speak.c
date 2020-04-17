@@ -15,15 +15,15 @@
 void
 jo_n_speak(const char *msg)
 {
-	espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, 0x0, 0);
+	espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, NULL, 0);
 	espeak_Synth(msg,
 				 strlen(msg),
 				 0,
 				 POS_CHARACTER,
 				 0,
 				 espeakCHARS_UTF8 | espeakENDPAUSE,
-				 0x0,
-				 0x0);
+				 NULL,
+				 NULL);
 	espeak_Synchronize();
 	espeak_Terminate();
 }

@@ -27,6 +27,10 @@ enum
 	JO_RET_RD_FAILED
 };
 
+int8_t	jo_r_lowbat(
+			int,
+			char**
+			);
 int8_t	jo_f_status(void);
 int8_t	jo_f_percent(void);
 

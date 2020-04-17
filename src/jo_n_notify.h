@@ -18,10 +18,10 @@
 #include <stdint.h>
 
 void	jo_n_notify(
-	const char[],
-	const char[],
-	NotifyUrgency,	
-	int32_t
-	);
+			const char[],
+			const char[],
+			NotifyUrgency,	
+			int32_t
+			);
 
 #endif

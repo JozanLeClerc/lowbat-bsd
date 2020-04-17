@@ -21,7 +21,8 @@ C_SRCS		+= ${C_SRCS_DIR}/jo_n_notify.c
 # -------------------------------------------------------------------------------------- #
 C_OBJS		= ${C_SRCS:.c=.o}
 # -------------------------------------------------------------------------------------- #
-A_SRCS		 = ${A_SRCS_DIR}/jo_f_status.asm
+A_SRCS		 = ${A_SRCS_DIR}/jo_r_lowbat.asm
+A_SRCS		+= ${A_SRCS_DIR}/jo_f_status.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_f_percent.asm
 # -------------------------------------------------------------------------------------- #
 A_OBJS		= ${A_SRCS:.asm=.o}
@@ -53,6 +54,7 @@ CINCS		+= -I/usr/local/lib/glib-2.0/include
 CINCS		+= -I/usr/local/include/gdk-pixbuf-2.0
 # -------------------------------------------------------------------------------------- #
 LINK		 = -L/usr/local/lib
+LINK		+= -L/usr/lib
 LINK		+= -lnotify
 LINK		+= -lespeak
 LINK		+= -lc
@@ -80,7 +82,7 @@ SED			= sed
 	${CC} -c ${CFLAGS} ${CINCS} -o ${.TARGET} ${.IMPSRC}
 # -------------------------------------------------------------------------------------- #
 ${TARGET}: ${A_OBJS} ${C_OBJS}
-	${CC} ${CFLAGS} ${CINCS} -o ${.TARGET} ${.ALLSRC} ${LINK}
+	${CC} ${CFLAGS} ${CINCS} -o ${.TARGET} ${A_OBJS} ${C_OBJS} ${LINK}
 # -------------------------------------------------------------------------------------- #
 depend:
 	${CC} ${CINCS} -E -MM ${C_SRCS} > .depend

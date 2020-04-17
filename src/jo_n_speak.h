@@ -15,6 +15,7 @@
 
 #include <espeak/speak_lib.h>
 #include <string.h>
+#include <stddef.h>
 
 void	jo_n_speak(const char *);
 
