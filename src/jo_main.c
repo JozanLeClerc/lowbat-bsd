@@ -29,9 +29,9 @@ main(void)
 		return (JO_RET_RD_FAILED);
 	}
 	if ((percent = jo_f_percent()) == -3) {
-		printf("failed\n");
 		return (JO_RET_RD_FAILED);
 	}
 	printf("status: %hhd, %hhd%%\n", status, percent);
+	/* ESPEAK */
 	return (JO_RET_FINE);
 }
