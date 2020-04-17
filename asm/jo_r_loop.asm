@@ -10,6 +10,9 @@
 ;;                                                                                      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; jo_r_loop(speak (0-1), *argv[])
+;; -------------------------------
+
 section .text
 	extern jo_n_speak
 	global jo_r_loop
@@ -19,6 +22,8 @@ jo_r_loop:
 	je		speak1
 
 next:
+	loop	jo_r_loop
+	mov		rax, 25
 	retq
 
 speak1:
