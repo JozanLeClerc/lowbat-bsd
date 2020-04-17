@@ -22,6 +22,7 @@ C_SRCS		+= ${C_SRCS_DIR}/jo_n_notify.c
 C_OBJS		= ${C_SRCS:.c=.o}
 # -------------------------------------------------------------------------------------- #
 A_SRCS		 = ${A_SRCS_DIR}/jo_r_lowbat.asm
+A_SRCS		+= ${A_SRCS_DIR}/jo_r_loop.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_c_args.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_f_status.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_f_percent.asm
@@ -87,7 +88,7 @@ ${TARGET}: ${A_OBJS} ${C_OBJS}
 # -------------------------------------------------------------------------------------- #
 depend:
 	${CC} ${CINCS} -E -MM ${C_SRCS} > .depend
-	${SED} 's/^/${C_SRCS_DIR}\//' .depend > .depend.tmp
+	${SED} 's/^jo/${C_SRCS_DIR}\/jo/' .depend > .depend.tmp
 	${MV} .depend.tmp .depend
 # -------------------------------------------------------------------------------------- #
 all:

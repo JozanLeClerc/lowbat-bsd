@@ -16,10 +16,10 @@
 #include <jo_lowbat.h>
 #include <jo_n_speak.h>
 #include <jo_n_notify.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 
 enum
 {
