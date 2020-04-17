@@ -10,6 +10,8 @@
 ;;                                                                                      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; jo_c_args(argc: rdi, *argv[]: rsi)
+;; ----------------------------------
 ;; returns 0 if args are invalid
 ;; returns 1 if args are valid
 
@@ -17,7 +19,7 @@ section .text
 	extern strncmp
 	global jo_c_args
 
-jo_c_args:						; jo_c_args(argc: rdi, *argv[]: rsi)
+jo_c_args:
 	cmp		rdi, 0x2
 	jle		no_args
 	mov		rax, [rsi + 0x8 * 0x2]
