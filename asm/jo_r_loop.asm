@@ -11,7 +11,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 section .text
+	extern jo_n_speak
 	global jo_r_loop
 
 jo_r_loop:
+	cmp		rdi, 0x1
+	je		speak1
+
+next:
 	retq
+
+speak1:
+	mov		rdi, [rsi + 8 * 2]
+	call	jo_n_speak
+	jmp		next

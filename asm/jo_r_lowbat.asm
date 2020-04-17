@@ -18,30 +18,12 @@
 ;; c: check
 
 section .text
-	extern puts
-	;; extern stoa
 	extern jo_c_args
 	extern jo_r_loop
 	global jo_r_lowbat
 
 jo_r_lowbat:
-	;; call	stoa
-	push	rdi
+	call	jo_c_args
 	mov		rdi, rax
-	call	puts
-	pop		rdi
+	call	jo_r_loop			; jo_r_loop(speak: 0-1, *argv[])
 	retq
-
-;; 	call	jo_c_args
-;; 	mov		bl, byte [rax + 0x0]
-;; 	cmp		bl, 0x0
-;; 	jne		joprint
-;; 	call	jo_r_loop			; jo_r_loop(speak: 0-1, *argv[])
-;; 	xor		rax, rax
-;; 	retq
-
-;; joprint:
-;; 	push	rdi
-;; 	mov		rdi, rax
-;; 	call	puts
-;; 	pop		rdi
