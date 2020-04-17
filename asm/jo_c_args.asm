@@ -18,7 +18,7 @@ jo_c_args:						; jo_c_args(argc: rdi, *argv[]: rdi)
 	cmp		rdi, 0x2
 	jle		no_args
 	push	rdi
-	mov		rdi, [rsi + 4 * 0]
+	mov		rdi, [rsi + 8 * 1]
 	push	rsi
 	mov		rsi, reference
 	mov		rdx, len
@@ -27,7 +27,7 @@ jo_c_args:						; jo_c_args(argc: rdi, *argv[]: rdi)
 	pop		rdi
 	cmp		rax, 0x0
 	jne		no_args
-	mov		rax, [rsi + 4 * 0]
+	mov		rax, [rsi + 8 * 2]
 	retq
 
 no_args:

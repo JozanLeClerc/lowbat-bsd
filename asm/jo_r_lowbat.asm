@@ -18,7 +18,7 @@
 ;; c: check
 
 section .text
-	extern printf
+	extern puts
 	extern jo_n_speak
 	extern jo_c_args
 	global jo_r_lowbat
@@ -38,13 +38,13 @@ jo_r_lowbat:
 joprint:
 	push	rdi
 	push	rsi
-	mov		rdi, fmt
-	mov		rsi, rax
-	call	printf
+	;; mov		rdi, fmt
+	mov		rdi, rax
+	call	puts
 	pop		rsi
 	pop		rdi
 	retq
 
 section .data
 	msg:	db "Welcome back, partner!", 0x0
-	fmt:	db	"argv[2]: %s\n", 0x0
+	;; fmt:	db	"argv[2]: %s\n", 0x0
