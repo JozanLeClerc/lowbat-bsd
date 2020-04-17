@@ -1,50 +1,39 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                                      ;;
-;;  File      : jo_r_lowbat.asm                                           /_________/   ;;
+;;  File      : jo_c_args.asm                                             /_________/   ;;
 ;;  Author    : Joe                                                             |       ;;
 ;;  Date      : 04/2020                                                         |       ;;
-;;  Info      : The main program                                                |       ;;
+;;  Info      : Check args                                                      |       ;;
 ;;                                                                      /       |       ;;
 ;;                                                                      \       /       ;;
 ;;                                                                       \_____/        ;;
 ;;                                                                                      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Files prefixes
-;; --------------
-;; f: fetch
-;; n: notify
-;; r: run
-;; c: check
-
 section .text
-	extern printf
-	extern jo_n_speak
-	extern jo_c_args
-	global jo_r_lowbat
+	extern strncmp
+	global jo_c_args
 
-jo_r_lowbat:
-	call	jo_c_args
-	cmp		rax, 0x0
-	jne		joprint
+jo_c_args:						; jo_c_args(argc: rdi, *argv[]: rdi)
+	cmp		rdi, 0x2
+	jle		no_args
 	push	rdi
-	mov		rdi, msg
-	call	jo_n_speak
-	pop		rdi
-	xor		rax, rax
-	mov		rax, rdi
-	retq
-
-joprint:
-	push	rdi
+	mov		rdi, [rsi + 4 * 0]
 	push	rsi
-	mov		rdi, fmt
-	mov		rsi, rax
-	call	printf
+	mov		rsi, reference
+	mov		rdx, len
+	call	strncmp
 	pop		rsi
 	pop		rdi
+	cmp		rax, 0x0
+	jne		no_args
+	mov		rax, [rsi + 4 * 0]
+	retq
+
+no_args:
+	xor		rax, rax
 	retq
 
 section .data
-	msg:	db "Welcome back, partner!", 0x0
-	fmt:	db	"argv[2]: %s\n", 0x0
+	reference:	db "--say", 0x0
+	len:		equ $ - reference ; reference len
