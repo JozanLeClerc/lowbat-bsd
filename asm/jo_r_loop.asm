@@ -25,8 +25,8 @@ jo_r_loop:
 	mov		ebp, edi
 
 speak1:
-	;; cmp		edx, 1
-	;; jne		speak1
+	cmp		ebp, 1
+	jne		speak1
 	mov		rdi, [rbx + 8 * 2]
 	call	jo_n_speak
 	jmp		speak1

@@ -14,10 +14,9 @@
 #include <libnotify/notify.h>
 
 int
-main(
-	int			argc,
-	const char	*argv[]
-	)
+main
+(int		argc,
+ const char	*argv[])
 {
 	return (jo_r_lowbat(argc, argv));
 }

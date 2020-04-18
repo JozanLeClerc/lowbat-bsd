@@ -24,7 +24,8 @@
 enum
 {
 	JO_RET_FINE,
-	JO_RET_RD_FAILED
+	JO_RET_RD_FAILED,
+	JO_RET_ESPEAK_FAILED
 };
 
 int8_t	jo_r_lowbat(

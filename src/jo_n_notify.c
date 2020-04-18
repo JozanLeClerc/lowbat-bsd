@@ -13,12 +13,11 @@
 #include <jo_n_notify.h>
 
 void
-jo_n_notify(
-	const char		head[],
-	const char		body[],
-	NotifyUrgency	u,
-	int32_t			t
-	)
+jo_n_notify
+(const char		head[],
+ const char		body[],
+ NotifyUrgency	u,
+ int32_t		t)
 {
 	NotifyNotification *n;
 
