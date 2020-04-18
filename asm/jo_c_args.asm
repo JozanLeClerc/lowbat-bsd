@@ -44,4 +44,4 @@ no_args:
 
 section .data
 	reference:	db "--say", 0x0
-	reflen:		equ $ - reference ; reference len
+	reflen:		equ $ - reference

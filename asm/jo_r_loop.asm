@@ -38,7 +38,7 @@ bigloop:
 	call	jo_f_percent		; check the capacity
 	cmp		rax, 0xfe			; in case we couldn't read
 	je		err
-	cmp		rax, 0xf			; 15%
+	cmp		rax, 0xf
 	jge		sleepalot
 	mov		rdi, rax
 	call	jo_r_cpyhead
@@ -56,13 +56,13 @@ speak:
 	call	jo_n_speak
 
 sleepabit:
-	mov		rdi, 0x14			; 20s
+	mov		rdi, 0x14
 	call	sleep				; sleep 20 seconds before next check/notification
 	jmp		bigloop
 
 sleepalot:
-	mov		rdi, 0xf0			; 240s
-	call	sleep				; sleep 4m if it's fine
+	mov		rdi, 0xf0
+	call	sleep				; sleep 240s (4m) if it's fine
 	jmp		bigloop
 
 return:
