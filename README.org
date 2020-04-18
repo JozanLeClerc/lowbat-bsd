@@ -15,7 +15,7 @@ Open a terminal and run these commands:
 
 #+BEGIN_SRC shell
 git clone https://github.com/JozanLeClerc/lowbat-bsd.git
-cd lowbat
+cd lowbat-bsd
 make
 sudo make install clean
 #+END_SRC
