@@ -47,7 +47,7 @@ bigloop:
 	mov		rcx, 0x3a98			; 15000ms notification timeout
 	call	jo_n_notify			; jo_n_notify(rdi, rsi, rdx, rcx)
 
-speak1:
+speak:
 	cmp		ebp, 1
 	jne		sleepabit
 	mov		rdi, [rbx + 0x8 * 0x2]
