@@ -28,7 +28,7 @@ jo_r_cpyhead:					; jo_r_cpyhead(percent: rdi)
 	xor		rax, rax
 	mov		al, 0x1
 	push	rdi
-	cal		sprintf
+	call	sprintf
 	pop		rdi
 	mov		rax, rdi
 	retq
