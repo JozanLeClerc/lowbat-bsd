@@ -39,6 +39,9 @@ Only one option is available:
 #+BEGIN_SRC shell
 lowbat --say "your custom message" > /dev/null 2>&1 &
 #+END_SRC
+#+BEGIN_SRC shell
+lowbat --say "beep beep - low battery" > /dev/null 2>&1 &
+#+END_SRC
 
 ** Uninstallation
 #+BEGIN_SRC shell
