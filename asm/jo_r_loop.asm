@@ -14,19 +14,31 @@
 ;; -------------------------------
 
 section .text
+	extern puts
 	extern jo_n_speak
 	global jo_r_loop
 
 jo_r_loop:
-	cmp		rdi, 0x1
-	je		speak1
-
-next:
-	loop	jo_r_loop
-	mov		rax, 25
-	retq
+	push	rcx
+	push	rbx
+	mov		rbx, rsi
+	mov		rcx, rdi
 
 speak1:
-	mov		rdi, [rsi + 8 * 2]
+	cmp		rcx, 0x1
+	jne		speak1
+	mov		rdi, [rbx + 8 * 2]
 	call	jo_n_speak
-	jmp		next
+	pop		rcx
+	push	rdi
+	mov		rdi, message
+	call	puts
+	pop		rdi
+	jmp		speak1
+
+return:
+	xor		rax, rax
+	retq
+
+section .data
+	message:	db "qwe", 0x0
