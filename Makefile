@@ -65,8 +65,8 @@ LDLIBS		+= -lc
 TARGET		= lowbat
 # ===================================== ASSEMBLER ====================================== #
 ASM			= nasm
-ASMFLAGS	= -g -f
-ASMARCH		= elf64
+# ASMFLAGS	= -g
+ASMARCH		= -f elf64
 # ======================================= UNIX ========================================= #
 SHELL		:= /bin/sh
 RM			= rm -f

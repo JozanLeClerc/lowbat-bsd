@@ -1,0 +1,49 @@
+* lowbat BSD
+BSD compatible version of lowbat, a small that runs in the background and warns you when your battery is low until you plug your laptop in.
+
+This version will only run on BSD systems. For the GNU/Linux version of lowbat, check my [[https://github.com/JozanLeClerc/lowbat.git][GNU/Linux lowbat repository]].
+
+** Dependencies
+- ~libnotify~
+- ~espeak~
+- ~BSD make~
+- ~nasm~
+- ~clang/llvm~
+
+** Installation
+Open a terminal and run these commands:
+
+#+BEGIN_SRC shell
+git clone https://github.com/JozanLeClerc/lowbat-bsd.git
+cd lowbat
+make
+sudo make install clean
+#+END_SRC
+
+Next you must find a way to get the script running right after loging in. Add this to your startup programs manager/rc file of choice:
+
+#+BEGIN_SRC shell
+lowbat > /dev/null 2>&1 &
+#+END_SRC
+
+/Note:/ to get notifications, make sure ~dunst~ is running in the background. In your startup programs manager/rc:
+#+BEGIN_SRC shell
+dunst > /dev/null 2>&1 &
+#+END_SRC
+
+** Options
+Only one option is available:
+- ~--say [MESSAGE]~ allows you to set an audio warning message when lowbat is active. By default ~lowbat~ doesn't send audio notifications and will only use ~notify-send~.
+
+**** Examples of use:
+#+BEGIN_SRC shell
+lowbat --say "your custom message" > /dev/null 2>&1 &
+#+END_SRC
+
+** Uninstallation
+#+BEGIN_SRC shell
+sudo make uninstall
+#+END_SRC
+
+** See also
+For more informations, check ~man lowbat~.
