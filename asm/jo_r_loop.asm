@@ -15,13 +15,11 @@
 
 section .text
 	extern sleep
-	extern memset
-	extern sprintf
-	extern dprintf
 	extern jo_f_percent
 	extern jo_f_status
 	extern jo_n_speak
 	extern jo_n_notify
+	extern jo_r_cpyhead
 	global jo_r_loop
 
 jo_r_loop:
@@ -32,31 +30,24 @@ jo_r_loop:
 	jmp		bigloop
 
 bigloop:
-	call	jo_f_status
+	call	jo_f_status			; check the status
 	cmp		rax, 0xfe			; in case we couldn't read
 	je		err
 	cmp		rax, 0x3
 	je		sleepalot
-	call	jo_f_percent
+	call	jo_f_percent		; check the capacity
 	cmp		rax, 0xfe			; in case we couldn't read
 	je		err
-	;; cmp		rax, 0xf			; 15%
-	cmp		rax, 60; 15%
+	cmp		rax, 0xf			; 15%
 	jge		sleepalot
-	mov		rdi, buff
-	mov		rsi, 0x0
-	mov		rdx, 17
-	call	memset
-	lea		rsi, [rel n_head]
-	mov		rdx, rax
-	call	sprintf				; get notification head via sprintf
-	mov		rsi, rdi
-	mov		rdi, 0x1
-	call	dprintf
+	mov		rdi, rax
+	call	jo_r_cpyhead
+	mov		rdi, rax
 	mov		rsi, n_body			; notification body
 	mov		rdx, 0x3			; ciritcal notification
 	mov		rcx, 0x3a98			; 15000ms notification timeout
-	call	jo_n_notify			; jo_n_notify(rdi, rsi, rdx, rcx)
+	call	jo_n_notify			; jo_n_notify(head: rdi, body: rsi,
+								;             urgency: rdx, timeout: rcx)
 
 speak:
 	cmp		ebp, 0x1
@@ -66,13 +57,12 @@ speak:
 
 sleepabit:
 	mov		rdi, 0x14			; 20s
-	call	sleep
+	call	sleep				; sleep 20 seconds before next check/notification
 	jmp		bigloop
 
 sleepalot:
-	;; mov		rdi, 0xf0			; 240s
-	mov		rdi, 40			; 240s
-	call	sleep
+	mov		rdi, 0xf0			; 240s
+	call	sleep				; sleep 4m if it's fine
 	jmp		bigloop
 
 return:
@@ -82,14 +72,14 @@ return:
 err:
 	mov		rdi, 0x2			; stderr
 	lea		rsi, [rel errmsg]
-	call	dprintf
-	mov		rax, 0x1
+	mov		rdx, errlen
+	mov		rax, 0x4
+	syscall						; write error message on stderr
+	xor		rax, rax
 	retq
 
 section .data
-	n_head:	db "Low battery: %d%%", 0x0
 	n_body:	db "Please plug in computer", 0x0
+	fmt:	db "%s", 0xa, 0x0
 	errmsg:	db "Failed to read battery informations", 0xa, 0x0
-
-section .bss
-	buff:	resb 17
+	errlen:	equ $ - errmsg

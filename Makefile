@@ -23,6 +23,7 @@ C_OBJS		= ${C_SRCS:.c=.o}
 # -------------------------------------------------------------------------------------- #
 A_SRCS		 = ${A_SRCS_DIR}/jo_r_lowbat.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_r_loop.asm
+A_SRCS		+= ${A_SRCS_DIR}/jo_r_cpyhead.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_c_args.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_f_status.asm
 A_SRCS		+= ${A_SRCS_DIR}/jo_f_percent.asm
