@@ -14,6 +14,9 @@ default: all
 # ====================================== DIRS ========================================== #
 C_SRCS_DIR	= src
 A_SRCS_DIR	= asm
+PREFIX		?= /usr/local
+BINPREFIX	?= ${PREFIX}/bin
+MANPREFIX	?= ${PREFIX}/share/man
 # ====================================== FILES ========================================= #
 C_SRCS		 = ${C_SRCS_DIR}/jo_lowbat.c
 C_SRCS		+= ${C_SRCS_DIR}/jo_n_speak.c
@@ -32,7 +35,7 @@ A_OBJS		= ${A_SRCS:.asm=.o}
 # ===================================== COMPILER ======================================= #
 CC			= clang
 # -------------------------------------------------------------------------------------- #
-CFLAGS		 = -std=c89
+CFLAGS		+= -std=c89
 CFLAGS		+= -Wall
 CFLAGS		+= -Wextra
 CFLAGS		+= -Wno-comment
@@ -41,12 +44,8 @@ CFLAGS		+= -Wno-c99-extensions
 CFLAGS		+= -Wno-variadic-macros
 CFLAGS		+= -Werror
 CFLAGS		+= -pedantic
-CFLAGS		+= ${DEBUG}
-# CFLAGS		+= ${OPTI}
+# CFLAGS		+= -O0 -glldb
 # -------------------------------------------------------------------------------------- #
-OPTI		= -O2 -pipe
-# -------------------------------------------------------------------------------------- #
-DEBUG		 = -glldb
 # DEBUG		+= -fsanitize=address
 # -------------------------------------------------------------------------------------- #
 CINCS		 = -Isrc/
@@ -55,11 +54,13 @@ CINCS		+= -I/usr/local/include/glib-2.0
 CINCS		+= -I/usr/local/lib/glib-2.0/include
 CINCS		+= -I/usr/local/include/gdk-pixbuf-2.0
 # -------------------------------------------------------------------------------------- #
-LINK		 = -L/usr/local/lib
-LINK		+= -L/usr/lib
-LINK		+= -lnotify
-LINK		+= -lespeak
-LINK		+= -lc
+LDFLAGS		?=
+LDLIBS		 = ${LDFLAGS}
+LDLIBS		+= -L/usr/local/lib
+LDLIBS		+= -L/usr/lib
+LDLIBS		+= -lnotify
+LDLIBS		+= -lespeak
+LDLIBS		+= -lc
 # -------------------------------------------------------------------------------------- #
 TARGET		= lowbat
 # ===================================== ASSEMBLER ====================================== #
@@ -70,12 +71,11 @@ ASMARCH		= elf64
 SHELL		:= /bin/sh
 RM			= rm -f
 MKDIR		= mkdir -p
-CP			= cp
+CP			= cp -pf
 MV			= mv
 SED			= sed
 # ======================================= RULES ======================================== #
 .SUFFIXES: .asm .c .o
-.PHONY: all clean fclean re depend
 # -------------------------------------------------------------------------------------- #
 .asm.o:
 	${ASM} ${ASMFLAGS} ${ASMARCH} -o ${.TARGET} ${.IMPSRC}
@@ -84,7 +84,7 @@ SED			= sed
 	${CC} -c ${CFLAGS} ${CINCS} -o ${.TARGET} ${.IMPSRC}
 # -------------------------------------------------------------------------------------- #
 ${TARGET}: ${A_OBJS} ${C_OBJS}
-	${CC} ${CFLAGS} ${CINCS} -o ${.TARGET} ${A_OBJS} ${C_OBJS} ${LINK}
+	${CC} ${CFLAGS} ${CINCS} -o ${.TARGET} ${A_OBJS} ${C_OBJS} ${LDLIBS}
 # -------------------------------------------------------------------------------------- #
 depend:
 	${CC} ${CINCS} -E -MM ${C_SRCS} > .depend
@@ -95,8 +95,20 @@ all:
 	${MAKE} depend
 	${MAKE} ${TARGET}
 # -------------------------------------------------------------------------------------- #
+install: all
+	${MKDIR} "${DESTDIR}${BINPREFIX}"
+	${CP} ${TARGET} "${DESTDIR}${BINPREFIX}"
+	${MKDIR} "${DESTDIR}${MANPREFIX}"/man1
+	${CP} man/${TARGET}.1 "${DESTDIR}${MANPREFIX}"/man1
+# -------------------------------------------------------------------------------------- #
+uninstall:
+	${RM} "${DESTDIR}${BINPREFIX}"/${TARGET}
+	${RM} "${DESTDIR}${MANPREFIX}"/man1/${TARGET}.1
+# -------------------------------------------------------------------------------------- #
 clean:
 	${RM} ${C_OBJS} ${A_OBJS} ${TARGET}.core .depend .depend.tmp ${TARGET}
 # -------------------------------------------------------------------------------------- #
 re: clean all
+# -------------------------------------------------------------------------------------- #
+.PHONY: all clean fclean re depend install uninstall
 # ======================================== EOF ========================================= #
