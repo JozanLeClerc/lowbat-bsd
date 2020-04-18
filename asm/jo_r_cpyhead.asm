@@ -17,18 +17,18 @@ section .text
 
 jo_r_cpyhead:					; jo_r_cpyhead(percent: rdi)
 	push	rdi
-	mov     rdi, buff
-	mov     rsi, 0x0
-	mov     rdx, 0x11
+	mov	rdi, buff
+	mov	rsi, 0x0
+	mov	rdx, 0x11
 	call	memset				; memset 0 notification head
-	lea     rsi, [rel n_head]
+	lea	rsi, [rel n_head]
 	pop		rdi
 	mov		rdx, rdi
 	mov		rdi, rax
 	xor		rax, rax
 	mov		al, 0x1
 	push	rdi
-	call    sprintf
+	cal	sprintf
 	pop		rdi
 	mov		rax, rdi
 	retq
