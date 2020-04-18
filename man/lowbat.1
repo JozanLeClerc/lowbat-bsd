@@ -1,0 +1,28 @@
+.\" Manpage for lowbat
+.\" Contact bousset.rudy@gmail.com to correct errors and typos.
+.TH lowbat 1 "29 Dec 2019" "lowbat 1.2" "Lowbat Reference"
+.SH NAME
+lowbat \- Lightweight battery warning utility
+.SH SYNOPSYS
+.B lowbat
+[\fB\-\-say\fR \fIMESSAGE\fR]
+.SH DESCRIPTION
+\fBlowbat\fR is a small program meant to be run as a daemon.
+It warns you using \fBnotify\-send\fR when your battery is falling under 15%.
+\fBlowbat\fR can send audio notifications using \fBespeak\fR with the \fB--say\fR option.
+.SH OPTIONS
+.TP
+.BR \-\-say =\fIMESSAGE\fR
+Sets a custom audio message.
+.SH TROUBLESHOOTING
+If \fBlowbat\fR fails to run correctly, you might be missing a dependency.
+To get run-time informations, simply run in a new terminal:
+.TP
+.in +.5i
+$ lowbat
+.SH BUGS
+No known bugs. If you found a bug, please get in touch with me via GitHub.
+.SH AUTHOR
+Joe
+.SH SEE ALSO
+dunst(1), notify-send(1), espeak(1)
