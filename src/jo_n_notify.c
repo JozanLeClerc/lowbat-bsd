@@ -21,7 +21,7 @@ jo_n_notify
 {
 	NotifyNotification *n;
 
-	notify_init("lowbat");
+	notify_init(JO_LOWBAT);
 	n = notify_notification_new(head, body, NULL);
 	notify_notification_set_urgency(n, u);
 	notify_notification_set_timeout(n, t);

@@ -18,7 +18,7 @@ PREFIX		?= /usr/local
 BINPREFIX	?= ${PREFIX}/bin
 MANPREFIX	?= ${PREFIX}/share/man
 # ====================================== FILES ========================================= #
-C_SRCS		 = ${C_SRCS_DIR}/jo_lowbat.c
+# C_SRCS		 = ${C_SRCS_DIR}/jo_lowbat.c
 C_SRCS		+= ${C_SRCS_DIR}/jo_n_speak.c
 C_SRCS		+= ${C_SRCS_DIR}/jo_n_notify.c
 # -------------------------------------------------------------------------------------- #
@@ -33,8 +33,7 @@ A_SRCS		+= ${A_SRCS_DIR}/jo_f_percent.asm
 # -------------------------------------------------------------------------------------- #
 A_OBJS		= ${A_SRCS:.asm=.o}
 # ===================================== COMPILER ======================================= #
-${CC}		= clang
-# -------------------------------------------------------------------------------------- #
+CC			?= clang
 CFLAGS		+= -std=c89
 CFLAGS		+= -Wall
 CFLAGS		+= -Wextra
@@ -45,8 +44,7 @@ CFLAGS		+= -Wno-variadic-macros
 CFLAGS		+= -Werror
 CFLAGS		+= -pedantic
 # CFLAGS		+= -O0 -glldb
-# -------------------------------------------------------------------------------------- #
-# DEBUG		+= -fsanitize=address
+# CFLAGS		+= -fsanitize=address
 # -------------------------------------------------------------------------------------- #
 CINCS		 = -Isrc/
 CINCS		+= -I/usr/local/include
@@ -67,6 +65,12 @@ TARGET		= lowbat
 ASM			= nasm
 # ASMFLAGS	= -g
 ASMARCH		= -f elf64
+# ====================================== LINKER ======================================== #
+LDFLAGS		?=
+LDLIBS		 = ${LDFLAGS}
+LDLIBS		+= -L/usr/local/lib
+LDLIBS		+= -lnotify
+LDLIBS		+= -lespeak
 # ======================================= UNIX ========================================= #
 SHELL		:= /bin/sh
 RM			= rm -f
@@ -84,7 +88,7 @@ SED			= sed
 	${CC} -c ${CFLAGS} ${CINCS} -o ${.TARGET} ${.IMPSRC}
 # -------------------------------------------------------------------------------------- #
 ${TARGET}: ${A_OBJS} ${C_OBJS}
-	${CC} ${CFLAGS} ${CINCS} -o ${.TARGET} ${A_OBJS} ${C_OBJS} ${LDLIBS}
+	${CC} ${CFLAGS} -o ${.TARGET} ${A_OBJS} ${C_OBJS} ${LDLIBS}
 # -------------------------------------------------------------------------------------- #
 depend:
 	${CC} ${CINCS} -E -MM ${C_SRCS} > .depend

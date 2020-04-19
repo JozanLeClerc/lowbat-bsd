@@ -1,9 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                                      ;;
-;;  File      : jo_r_cpyhead.asm                                          /_________/   ;;
-;;  Author    : Joe                                                             |       ;;
-;;  Date      : 04/2020                                                         |       ;;
-;;  Info      : Formats and returns notification head title                     |       ;;
+;;  File     : jo_r_cpyhead.asm                                           /_________/   ;;
+;;  Author   : Joe                                                              |       ;;
+;;  Date     : 04/2020                                                          |       ;;
+;;  Info     : Formats and returns notification head title                      |       ;;
 ;;                                                                      /       |       ;;
 ;;                                                                      \       /       ;;
 ;;                                                                       \_____/        ;;

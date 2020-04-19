@@ -17,6 +17,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define	JO_LOWBAT "lowbat"
+
 void	jo_n_notify(
 			const char[],
 			const char[],

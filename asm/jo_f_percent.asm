@@ -1,9 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                                      ;;
-;;  File      : jo_f_percent.asm                                          /_________/   ;;
-;;  Author    : Joe                                                             |       ;;
-;;  Date      : 04/2020                                                         |       ;;
-;;  Info      : Gets batt remaining capacity                                    |       ;;
+;;  File     : jo_f_percent.asm                                           /_________/   ;;
+;;  Author   : Joe                                                              |       ;;
+;;  Date     : 04/2020                                                          |       ;;
+;;  Info     : Gets batt remaining capacity                                     |       ;;
 ;;                                                                      /       |       ;;
 ;;                                                                      \       /       ;;
 ;;                                                                       \_____/        ;;
