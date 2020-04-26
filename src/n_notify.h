@@ -1,34 +1,29 @@
-/****************************************************************************************/
+/* ************************************************************************************ */
 /*                                                                                      */
-/*  File     : jo_n_speak.h                                               /_________/   */
+/*  File     : n_notify.h                                                 /_________/   */
 /*  Author   : Joe                                                              |       */
 /*  Date     : 04/2020                                                          |       */
-/*  Info     : Use espeak lib to speak                                          |       */
+/*  Info     : Uses libnotify lib to notify                                     |       */
 /*                                                                      /       |       */
 /*                                                                      \       /       */
 /*                                                                       \_____/        */
 /*                                                                                      */
-/****************************************************************************************/
+/* ************************************************************************************ */
 
-#ifndef JO_N_SPEAK_H
-#define JO_N_SPEAK_H
+#ifndef JO_N_NOTIFY_H
+#define JO_N_NOTIFY_H
 
-#include <espeak/speak_lib.h>
-#include <string.h>
-#include <stdlib.h>
+#include <libnotify/notify.h>
 #include <stddef.h>
-#include <stdio.h>
-#include <unistd.h>
+#include <stdint.h>
 
-enum
-{
-	JO_RET_FINE,
-	JO_RET_RD_FAILED,
-	JO_RET_ESPEAK_FAILED
-};
+#define	JO_LOWBAT "lowbat"
 
-#define JO_ESPEAK_VOICE "English"
-
-void	jo_n_speak(const char *);
+void	jo_n_notify(
+			const char[],
+			const char[],
+			NotifyUrgency,	
+			int32_t
+			);
 
 #endif

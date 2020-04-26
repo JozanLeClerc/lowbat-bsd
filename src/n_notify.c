@@ -1,6 +1,6 @@
-/****************************************************************************************/
+/* ************************************************************************************ */
 /*                                                                                      */
-/*  File     : jo_n_notify.h                                              /_________/   */
+/*  File     : n_notify.c                                                 /_________/   */
 /*  Author   : Joe                                                              |       */
 /*  Date     : 04/2020                                                          |       */
 /*  Info     : Uses libnotify lib to notify                                     |       */
@@ -8,22 +8,24 @@
 /*                                                                      \       /       */
 /*                                                                       \_____/        */
 /*                                                                                      */
-/****************************************************************************************/
+/* ************************************************************************************ */
 
-#ifndef JO_N_NOTIFY_H
-#define JO_N_NOTIFY_H
+#include <jo_n_notify.h>
 
-#include <libnotify/notify.h>
-#include <stddef.h>
-#include <stdint.h>
+void
+jo_n_notify
+(const char		head[],
+ const char		body[],
+ NotifyUrgency	u,
+ int32_t		t)
+{
+	NotifyNotification *n;
 
-#define	JO_LOWBAT "lowbat"
-
-void	jo_n_notify(
-			const char[],
-			const char[],
-			NotifyUrgency,	
-			int32_t
-			);
-
-#endif
+	notify_init(JO_LOWBAT);
+	n = notify_notification_new(head, body, NULL);
+	notify_notification_set_urgency(n, u);
+	notify_notification_set_timeout(n, t);
+	notify_notification_show(n, NULL);
+	notify_uninit();
+	n = NULL;
+}

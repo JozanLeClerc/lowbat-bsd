@@ -12,25 +12,25 @@
 
 default: all
 
-C_SRCS_DIR	= src
-A_SRCS_DIR	= asm
+C_SRCS_DIR	 = src
+A_SRCS_DIR	 = asm
 PREFIX		?= /usr/local
 BINPREFIX	?= ${PREFIX}/bin
 MANPREFIX	?= ${PREFIX}/share/man
 
-C_SRCS		+= ${C_SRCS_DIR}/jo_n_speak.c
-C_SRCS		+= ${C_SRCS_DIR}/jo_n_notify.c
+C_SRCS		+= ${C_SRCS_DIR}/n_speak.c
+C_SRCS		+= ${C_SRCS_DIR}/n_notify.c
 
-C_OBJS		= ${C_SRCS:.c=.o}
+C_OBJS		 = ${C_SRCS:.c=.o}
 
-A_SRCS		 = ${A_SRCS_DIR}/jo_r_lowbat.asm
-A_SRCS		+= ${A_SRCS_DIR}/jo_r_loop.asm
-A_SRCS		+= ${A_SRCS_DIR}/jo_r_cpyhead.asm
-A_SRCS		+= ${A_SRCS_DIR}/jo_c_args.asm
-A_SRCS		+= ${A_SRCS_DIR}/jo_f_status.asm
-A_SRCS		+= ${A_SRCS_DIR}/jo_f_percent.asm
+A_SRCS		 = ${A_SRCS_DIR}/r_lowbat.asm
+A_SRCS		+= ${A_SRCS_DIR}/r_loop.asm
+A_SRCS		+= ${A_SRCS_DIR}/r_cpyhead.asm
+A_SRCS		+= ${A_SRCS_DIR}/c_args.asm
+A_SRCS		+= ${A_SRCS_DIR}/f_status.asm
+A_SRCS		+= ${A_SRCS_DIR}/f_percent.asm
 
-A_OBJS		= ${A_SRCS:.asm=.o}
+A_OBJS		 = ${A_SRCS:.asm=.o}
 
 CC			 = clang
 CFLAGS		+= -std=c89
@@ -59,11 +59,12 @@ LDLIBS		+= -lnotify
 LDLIBS		+= -lespeak
 LDLIBS		+= -lc
 
-TARGET		= lowbat
+TARGET		 = lowbat
 
-ASM			= nasm
-# ASMFLAGS	= -g
-ASMARCH		= -f elf64
+ASM			 = yasm
+ASMFLAGS	 = -f elf64
+ASMFLAGS	+= -p gas
+# ASMFLAGS	+= -g
 
 LDFLAGS		?=
 LDLIBS		 = ${LDFLAGS}
@@ -72,16 +73,16 @@ LDLIBS		+= -lnotify
 LDLIBS		+= -lespeak
 
 SHELL		:= /bin/sh
-RM			= rm -f
-MKDIR		= mkdir -p
-CP			= cp -pf
-MV			= mv
-SED			= sed
+RM			 = rm -f
+MKDIR		 = mkdir -p
+CP			 = cp -pf
+MV			 = mv
+SED			 = sed
 
 .SUFFIXES: .asm .c .o
 
 .asm.o:
-	${ASM} ${ASMFLAGS} ${ASMARCH} -o ${.TARGET} ${.IMPSRC}
+	${ASM} ${ASMFLAGS} -o ${.TARGET} ${.IMPSRC}
 
 .c.o:
 	${CC} -c ${CFLAGS} ${CINCS} -o ${.TARGET} ${.IMPSRC}

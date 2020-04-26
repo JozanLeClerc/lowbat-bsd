@@ -7,7 +7,7 @@ This version will only run on 64-bits BSD systems. It was only tested on FreeBSD
 - ~libnotify~
 - ~espeak~
 - ~BSD make~
-- ~nasm~
+- ~yasm~
 - ~clang/llvm~
 
 ** Installation
