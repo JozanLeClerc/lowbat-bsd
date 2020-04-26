@@ -32,7 +32,7 @@ A_SRCS		+= ${A_SRCS_DIR}/jo_f_percent.asm
 
 A_OBJS		= ${A_SRCS:.asm=.o}
 
-CC			?= clang
+CC			 = clang
 CFLAGS		+= -std=c89
 CFLAGS		+= -Wall
 CFLAGS		+= -Wextra
