@@ -14,7 +14,6 @@
 .extern system
 .extern atoi
 .globl f_percent
-.globl main
 
 f_percent:
 	movq	$f_cmd, %rdi
