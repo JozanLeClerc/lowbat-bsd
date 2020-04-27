@@ -11,7 +11,6 @@
 /* ************************************************************************************ */
 
 .text
-	.extern printf
 .extern system
 .extern atoi
 .globl f_percent
