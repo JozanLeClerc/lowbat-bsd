@@ -45,6 +45,6 @@ err:
 	retq
 
 .data
-	f_cmd:		.asciz "apm -l >/tmp/lowbat.percent"
-	pr_file:	.asciz "/tmp/lowbat.percent"
-	buff:		.byte 0x0, 0x0, 0x0, 0x0
+	f_cmd:		.asciz	"apm -l >/tmp/lowbat.percent"
+	pr_file:	.asciz	"/tmp/lowbat.percent"
+	buff:		.byte	0x0, 0x0, 0x0, 0x0

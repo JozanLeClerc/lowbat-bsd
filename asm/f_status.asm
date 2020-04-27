@@ -19,35 +19,41 @@
 /* 3: charging */
 /***************/
 
-section .text
-	extern system
-	global jo_f_status
+.text
+.extern system
+.globl f_status
 
-jo_f_status:
-	mov		rdi, f_cmd
-	call	system
-	mov		rdi, st_file
-	mov		rsi, 0x0
-	mov		rax, 0x5
+f_status:
+	movq	$f_cmd, %rdi
+	callq	system
+	movq	$st_file, %rdi
+	xorq	%rsi, %rsi
+	xorq	%rax, %rax
+	movb	$0x5, %al				/* sys_open */
 	syscall
 	jc		err
-	mov		rdi, rax
-	mov		rsi, buff
-	mov		rdx, 0x1
-	mov		rax, 0x3
+	movq	%rax, %rdi
+	movq	$buff, %rsi
+	xorq	%rdx, %rdx
+	xorq	%rax, %rax
+	movb	$0x1, %dl
+	movb	$0x3, %al				/* sys_read */
 	syscall
 	jc		err
-	mov		rax, 0x6
+	xorq	%rax, %rax
+	movb	$0x6, %al				/* sys_close */
 	syscall
-	movsx	rax, byte [rsi + 0x0]
-	sub		rax, 0x30
+	xorq	%rax, %rax
+	movb	(%rsi), %al
+	subb	$0x30, %al
 	retq
 
 err:
-	mov		rax, 0xfe
+	xorq	%rax, %rax
+	movb	$0xfe, %al
 	retq
 
-section .data
-	f_cmd:		db	"apm -b > /tmp/lowbat.status", 0x0
-	st_file:	db	"/tmp/lowbat.status", 0x0
-	buff:		db	0x0, 0x0
+.data
+	f_cmd:		.asciz	"apm -b >/tmp/lowbat.status"
+	st_file:	.asciz	"/tmp/lowbat.status"
+	buff:		.byte	0x0, 0x0
