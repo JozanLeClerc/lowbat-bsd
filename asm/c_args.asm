@@ -18,8 +18,8 @@
 /* ******************************* */
 
 .text
-	.extern strncmp
-	.globl c_args
+.extern strncmp
+.globl c_args
 
 c_args:
 	cmp		$0x2, %rdi

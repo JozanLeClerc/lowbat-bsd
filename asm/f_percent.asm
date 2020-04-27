@@ -10,38 +10,43 @@
 /*                                                                                      */
 /* ************************************************************************************ */
 
-section .text
-	extern system
-	extern atoi
-	global jo_f_percent
+.text
+	.extern printf
+.extern system
+.extern atoi
+.globl f_percent
+.globl main
 
-jo_f_percent:
-	mov		rdi, f_cmd
-	call	system
-	mov		rdi, pr_file
-	mov		rsi, 0x0
-	mov		rax, 0x5
+f_percent:
+	movq	$f_cmd, %rdi
+	callq	system
+	movq	$pr_file, %rdi
+	xorq	%rsi, %rsi
+	xorq	%rax, %rax
+	movb	$0x5, %al				/* sys_open */
 	syscall
 	jc		err
-	mov		rdi, rax
-	mov		rsi, buff
-	mov		rdx, 0x3
-	mov		rax, 0x3
+	movq	%rax, %rdi
+	movq	$buff, %rsi
+	xorq	%rdx, %rdx
+	xorq	%rax, %rax
+	movb	$0x3, %dl
+	movb	$0x3, %al				/* sys_read */
 	syscall
 	jc		err
-	mov		rax, 0x6
+	xorq	%rax, %rax
+	movb	$0x6, %al				/* sys_close */
 	syscall
-	xor		rax, rax
-	mov		rdi, rsi
-	call	atoi
+	xorq	%rax, %rax
+	movq	%rsi, %rdi
+	callq	atoi
 	retq
 
 err:
-	mov		rax, 0xfe
+	movq	$0xfe, %rax
 	retq
 
-
-section .data
-	f_cmd:		db "apm -l > /tmp/lowbat.percent", 0x0
-	pr_file:	db "/tmp/lowbat.percent", 0x0
-	buff:		db 0x0, 0x0, 0x0, 0x0
+.data
+	f_cmd:		.asciz "apm -l >/tmp/lowbat.percent"
+	pr_file:	.asciz "/tmp/lowbat.percent"
+	buff:		.byte 0x0, 0x0, 0x0, 0x0
