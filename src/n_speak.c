@@ -13,7 +13,7 @@
 #include <jo_n_speak.h>
 
 void
-jo_n_speak(const char *msg)
+n_speak(const char *msg)
 {
 	espeak_ERROR	err;
 	int32_t			samplerate;

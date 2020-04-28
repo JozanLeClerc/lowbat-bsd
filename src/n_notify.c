@@ -13,7 +13,7 @@
 #include <jo_n_notify.h>
 
 void
-jo_n_notify
+n_notify
 (const char		head[],
  const char		body[],
  NotifyUrgency	u,

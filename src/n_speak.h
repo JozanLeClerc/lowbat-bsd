@@ -29,6 +29,6 @@ enum
 
 #define JO_ESPEAK_VOICE "English"
 
-void	jo_n_speak(const char *);
+void	n_speak(const char *);
 
 #endif

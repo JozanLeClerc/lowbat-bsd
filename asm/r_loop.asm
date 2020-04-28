@@ -10,50 +10,95 @@
 /*                                                                                      */
 /****************************************************************************************/
 
-;; jo_r_loop(speak (0-1), *argv[])
-;; -------------------------------
+/***********************************/
+/* jo_r_loop(speak (0-1), *argv[]) */
+/* ------------------------------- */
+/***********************************/
 
-section .text
-	extern sleep
-	extern jo_f_percent
-	extern jo_f_status
-	extern jo_n_speak
-	extern jo_n_notify
-	extern jo_r_cpyhead
-	global jo_r_loop
+.text
+.extern sleep
+.extern f_percent
+.extern f_status
+.extern n_speak
+.extern n_notify
+.extern r_cpyhead
+.globl r_loop
 
-jo_r_loop:
-	push	rbp
-	push	rbx
-	mov		rbx, rsi
-	mov		ebp, edi
+r_loop:
+	pushq	%rbp
+	pushq	%rbx
+	movq	%rsi, %rbx
+	movq	%edi, %ebp
 	jmp		bigloop
 
 bigloop:
-	call	jo_f_status			; check the status
-	cmp		rax, 0xfe			; in case we couldn't read
+	callq	f_status				/* check the status */
+	cmp		$0xfe, %rax				/* if sys_open/sys_read failed */
 	je		err
-	cmp		rax, 0x3
+	cmp		$0x3, %rax
 	je		sleepalot
-	call	jo_f_percent		; check the capacity
-	cmp		rax, 0xfe			; in case we couldn't read
+	callq	f_percent				/* check the capacity */
+	cmp		$0xfe, %rax				/* if sys_open/sys_read failed */
 	je		err
-	cmp		rax, 0xf
+	cmp		$0xf, %rax
 	jge		sleepalot
-	mov		rdi, rax
-	call	jo_r_cpyhead
-	mov		rdi, rax
-	mov		rsi, n_body			; notification body
-	mov		rdx, 0x3			; ciritcal notification
-	mov		rcx, 0x3a98			; 15000ms notification timeout
-	call	jo_n_notify			; jo_n_notify(head: rdi, body: rsi,
-								;             urgency: rdx, timeout: rcx)
+	movq	%rax, %rdi
+	callq	r_cpyhead				/* notification head */
+	movq	%rax, %rdi
+	movq	$n_body, %rsi			/* notification body */
+	movq	$0x3, %rdx				/* critical notification */
+	movq	$0x3a98, %rcx			/* 15000ms notification timeout */
+	callq	n_notify				/* n_notify(head: rdi, body: rsi,      */
+									/*          urgency: rdx, timeout: rcx */
 
 speak:
-	cmp		ebp, 0x1
+	cmp		$0x1, %ebp
 	jne		sleepabit
-	mov		rdi, [rbx + 0x8 * 0x2]
-	call	jo_n_speak
+	movq	(%rbx,0x8,0x2), %rdi
+	callq	n_speak
+
+
+;; section .text
+;; 	extern sleep
+;; 	extern jo_f_percent
+;; 	extern jo_f_status
+;; 	extern jo_n_speak
+;; 	extern jo_n_notify
+;; 	extern jo_r_cpyhead
+;; 	global jo_r_loop
+
+;; jo_r_loop:
+;; 	push	rbp
+;; 	push	rbx
+;; 	mov		rbx, rsi
+;; 	mov		ebp, edi
+;; 	jmp		bigloop
+
+;; bigloop:
+;; 	call	jo_f_status			; check the status
+;; 	cmp		rax, 0xfe			; in case we couldn't read
+;; 	je		err
+;; 	cmp		rax, 0x3
+;; 	je		sleepalot
+;; 	call	jo_f_percent		; check the capacity
+;; 	cmp		rax, 0xfe			; in case we couldn't read
+;; 	je		err
+;; 	cmp		rax, 0xf
+;; 	jge		sleepalot
+;; 	mov		rdi, rax
+;; 	call	jo_r_cpyhead
+;; 	mov		rdi, rax
+	;; mov		rsi, n_body			; notification body
+	;; mov		rdx, 0x3			; ciritcal notification
+	;; mov		rcx, 0x3a98			; 15000ms notification timeout
+	;; call	jo_n_notify			; jo_n_notify(head: rdi, body: rsi,
+	;; 							;             urgency: rdx, timeout: rcx)
+
+;; speak:
+;; 	cmp		ebp, 0x1
+;; 	jne		sleepabit
+;; 	mov		rdi, [rbx + 0x8 * 0x2]
+;; 	call	jo_n_speak
 
 sleepabit:
 	mov		rdi, 0x14

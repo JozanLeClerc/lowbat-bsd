@@ -19,7 +19,7 @@
 
 #define	JO_LOWBAT "lowbat"
 
-void	jo_n_notify(
+void	n_notify(
 			const char[],
 			const char[],
 			NotifyUrgency,	
