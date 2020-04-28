@@ -13,26 +13,13 @@
 .text
 .extern sprintf
 .globl r_cpyhead
-	.extern puts
-	.globl main
 
 r_cpyhead:
 	movq	$buff, %rdi
 	movq	$n_head, %rsi
 	xorq	%rax, %rax
 	callq	sprintf
-	movq	%rdi, %rax
-	retq
-
-main:
-	movq	$25, %rdx
-	callq	r_cpyhead
-	movq	%rax, %rdi
-	callq	puts
-
-	xorq	%rdi, %rdi
-	movq	$0x1, %rax
-	syscall
+	movq	$buff, %rax
 	retq
 
 .data
@@ -40,32 +27,3 @@ main:
 
 .bss
 	buff:	.zero 0x11
-
-/* ;; section .text */
-/* ;; 	extern memset */
-/* ;; 	extern sprintf */
-/* ;; 	global jo_r_cpyhead */
-/*  */
-/* ;; jo_r_cpyhead:					; jo_r_cpyhead(percent: rdi) */
-/* ;; 	push	rdi */
-/* ;; 	mov		rdi, buff */
-/* ;; 	mov		rsi, 0x0 */
-/* ;; 	mov		rdx, 0x11 */
-/* ;; 	call	memset				; memset 0 notification head */
-	/* ;; lea		rsi, [rel n_head] */
-	/* ;; pop		rdi */
-	/* ;; mov		rdx, rdi */
-	/* ;; mov		rdi, rax */
-	/* ;; xor		rax, rax */
-/* ;; 	mov		al, 0x1 */
-/* ;; 	push	rdi */
-/* ;; 	call	sprintf */
-/* ;; 	pop		rdi */
-/* ;; 	mov		rax, rdi */
-/* ;; 	retq */
-/*  */
-/* ;; section .data */
-/* ;; 	n_head:	db "Low battery: %d%%", 0x0 */
-/*  */
-/* ;; section .bss */
-/* ;; 	buff:	resb 0x11 */
