@@ -32,7 +32,7 @@ A_SRCS		+= ${A_SRCS_DIR}/f_percent.asm
 
 A_OBJS		 = ${A_SRCS:.asm=.o}
 
-CC			 = clang
+CC			 = cc
 CFLAGS		+= -std=c89
 CFLAGS		+= -Wall
 CFLAGS		+= -Wextra
@@ -45,7 +45,6 @@ CFLAGS		+= -pedantic
 # CFLAGS		+= -O0 -glldb
 # CFLAGS		+= -fsanitize=address
 
-CINCS		 = -Isrc/
 CINCS		+= -I/usr/local/include
 CINCS		+= -I/usr/local/include/glib-2.0
 CINCS		+= -I/usr/local/lib/glib-2.0/include
@@ -115,3 +114,10 @@ clean:
 re: clean all
 
 .PHONY: all clean fclean re depend install uninstall
+
+# Files prefixes
+# --------------
+# f: fetch
+# n: notify
+# r: run
+# c: check

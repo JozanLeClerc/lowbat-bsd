@@ -10,24 +10,17 @@
 /*                                                                                      */
 /****************************************************************************************/
 
-;; Files prefixes
-;; --------------
-;; f: fetch
-;; n: notify
-;; r: run
-;; c: check
-
-section .text
-	extern jo_c_args
-	extern jo_r_loop
-	global main
+.text
+.extern c_args
+.extern r_loop
+.globl main
 
 main:
-	call	jo_c_args
-	mov		rdi, rax
-	call	jo_r_loop			; jo_r_loop(speak: 0-1, *argv[])
+	callq	c_args
+	movq	%rax, %rdi
+	callq	r_loop			/* jo_r_loop(speak: 0-1, *argv[]) */
 
-	xor		rax, rax
-	xor		rdi, rdi
-	mov		rax, 0x1
+	xorq	%rax, %rax
+	xorq	%rdi, %rdi
+	mov		$0x1, %rax
 	syscall
