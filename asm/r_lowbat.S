@@ -38,27 +38,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * lowbat: src/n_notify.c
- * Wed Feb 10 19:21:25 CET 2021
+ * lowbat: asm/r_lowbat.S
+ * Wed Feb 10 19:13:28 CET 2021
  * Joe
  */
 
-#include "n_notify.h"
+.text
+.extern c_args
+.extern r_loop
+.globl main
 
-void
-n_notify
-(const char		head[],
- const char		body[],
- NotifyUrgency	u,
- int32_t		t)
-{
-	NotifyNotification *n;
+main:
+	callq	c_args
+	movq	%rax, %rdi
+	callq	r_loop			/* jo_r_loop(speak: 0-1, *argv[]) */
 
-	notify_init(JO_LOWBAT);
-	n = notify_notification_new(head, body, NULL);
-	notify_notification_set_urgency(n, u);
-	notify_notification_set_timeout(n, t);
-	notify_notification_show(n, NULL);
-	notify_uninit();
-	n = NULL;
-}
+	xorq	%rax, %rax
+	xorq	%rdi, %rdi
+	mov		$0x1, %rax
+	syscall

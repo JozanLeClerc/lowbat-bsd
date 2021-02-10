@@ -1,14 +1,20 @@
-##########################################################################################
-#*                                                                                      *#
-#*  File     : Makefile                                                   /_________/   *#
-#*  Author   : Joe                                                              |       *#
-#*  Date     : 04/2020                                                          |       *#
-#*  Info     : BSD Makefile                                                     |       *#
-#*                                                                      /       |       *#
-#*                                                                      \       /       *#
-#*                                                                       \_____/        *#
-#*                                                                                      *#
-##########################################################################################
+# ========================
+# =====    ===============
+# ======  ================
+# ======  ================
+# ======  ====   ====   ==
+# ======  ===     ==  =  =
+# ======  ===  =  ==     =
+# =  ===  ===  =  ==  ====
+# =  ===  ===  =  ==  =  =
+# ==     =====   ====   ==
+# ========================
+#
+# lowbat: Makefile
+# Wed Feb 10 19:20:35 CET 2021
+# Joe
+#
+# BSD Makefile
 
 default: all
 
@@ -21,16 +27,16 @@ MANPREFIX	?= ${PREFIX}/share/man
 C_SRCS		+= ${C_SRCS_DIR}/n_speak.c
 C_SRCS		+= ${C_SRCS_DIR}/n_notify.c
 
-C_OBJS		 = ${C_SRCS:.c=.o}
+C_OBJS		 = ${C_SRCS:.c=.c.o}
 
-A_SRCS		 = ${A_SRCS_DIR}/r_lowbat.asm
-A_SRCS		+= ${A_SRCS_DIR}/r_loop.asm
-A_SRCS		+= ${A_SRCS_DIR}/r_cpyhead.asm
-A_SRCS		+= ${A_SRCS_DIR}/c_args.asm
-A_SRCS		+= ${A_SRCS_DIR}/f_status.asm
-A_SRCS		+= ${A_SRCS_DIR}/f_percent.asm
+A_SRCS		 = ${A_SRCS_DIR}/r_lowbat.S
+A_SRCS		+= ${A_SRCS_DIR}/r_loop.S
+A_SRCS		+= ${A_SRCS_DIR}/r_cpyhead.S
+A_SRCS		+= ${A_SRCS_DIR}/c_args.S
+A_SRCS		+= ${A_SRCS_DIR}/f_status.S
+A_SRCS		+= ${A_SRCS_DIR}/f_percent.S
 
-A_OBJS		 = ${A_SRCS:.asm=.o}
+A_OBJS		 = ${A_SRCS:.S=.S.o}
 
 CC			 = cc
 CFLAGS		+= -std=c89
@@ -60,10 +66,10 @@ LDLIBS		+= -lc
 
 TARGET		 = lowbat
 
-ASM			 = yasm
-ASMFLAGS	 = -f elf64
-ASMFLAGS	+= -p gas
-# ASMFLAGS	+= -g
+AS			 = as
+# ASFLAGS	 = -f elf64
+# ASFLAGS	+= -p gas
+# ASFLAGS	+= -g
 
 LDFLAGS		?=
 LDLIBS		 = ${LDFLAGS}
@@ -78,12 +84,12 @@ CP			 = cp -pf
 MV			 = mv
 SED			 = sed
 
-.SUFFIXES: .asm .c .o
+.SUFFIXES: .S .c .S.o .c.o
 
-.asm.o:
-	${ASM} ${ASMFLAGS} -o ${.TARGET} ${.IMPSRC}
+.S.S.o:
+	${AS} ${ASFLAGS} -o ${.TARGET} ${.IMPSRC}
 
-.c.o:
+.c.c.o:
 	${CC} -c ${CFLAGS} ${CINCS} -o ${.TARGET} ${.IMPSRC}
 
 ${TARGET}: ${A_OBJS} ${C_OBJS}

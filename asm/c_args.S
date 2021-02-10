@@ -38,27 +38,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * lowbat: src/n_notify.c
- * Wed Feb 10 19:21:25 CET 2021
+ * lowbat: asm/c_args.S
+ * Wed Feb 10 18:23:00 CET 2021
  * Joe
  */
 
-#include "n_notify.h"
+/*
+ * c_args(argc: rdi, *argv[]: rsi)
+ * -------------------------------
+ * returns 0 if args are invalid
+ * returns 1 if args are valid
+ */
 
-void
-n_notify
-(const char		head[],
- const char		body[],
- NotifyUrgency	u,
- int32_t		t)
-{
-	NotifyNotification *n;
+.text
+.extern strncmp
+.globl c_args
 
-	notify_init(JO_LOWBAT);
-	n = notify_notification_new(head, body, NULL);
-	notify_notification_set_urgency(n, u);
-	notify_notification_set_timeout(n, t);
-	notify_notification_show(n, NULL);
-	notify_uninit();
-	n = NULL;
-}
+c_args:
+	cmp		$0x2, %rdi
+	jle		no_args
+	xorq	%rax, %rax
+	pushq	%rcx
+	xorq	%rcx, %rcx
+	movb	$0x8, %cl
+	movq	(%rsi, %rcx, 2), %rax
+	cmpb	$0x0, (%rax)
+	je		no_args
+	pushq	%rdi
+	movq	(%rsi, %rcx, 1), %rdi
+	pushq	%rsi
+	movq	$reference, %rsi
+	pushq	%rdx
+	xorq	%rdx, %rdx
+	movb	$0x6, %dl
+	callq	strncmp
+	popq	%rdx
+	popq	%rsi
+	popq	%rdi
+	popq	%rcx
+	cmp		$0x0, %rax
+	jne		no_args
+	xorq	%rax, %rax
+	movb	$0x1, %al
+	jmp		return
+
+no_args:
+	xorq	%rax, %rax
+
+return:
+	retq
+
+.data
+	reference:	.asciz "--say"

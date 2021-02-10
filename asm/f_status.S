@@ -38,27 +38,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * lowbat: src/n_notify.c
- * Wed Feb 10 19:21:25 CET 2021
+ * lowbat: asm/f_status.S
+ * Wed Feb 10 18:23:30 CET 2021
  * Joe
  */
 
-#include "n_notify.h"
+/*
+ * apm status
+ * ----------
+ * 0: high
+ * 1: low
+ * 2: critical
+ * 3: charging
+ */
 
-void
-n_notify
-(const char		head[],
- const char		body[],
- NotifyUrgency	u,
- int32_t		t)
-{
-	NotifyNotification *n;
+.text
+.extern system
+.globl f_status
 
-	notify_init(JO_LOWBAT);
-	n = notify_notification_new(head, body, NULL);
-	notify_notification_set_urgency(n, u);
-	notify_notification_set_timeout(n, t);
-	notify_notification_show(n, NULL);
-	notify_uninit();
-	n = NULL;
-}
+f_status:
+	movq	$f_cmd, %rdi
+	callq	system
+	movq	$st_file, %rdi
+	xorq	%rsi, %rsi
+	xorq	%rax, %rax
+	movb	$0x5, %al				/* sys_open */
+	syscall
+	jc		err
+	movq	%rax, %rdi
+	movq	$buff, %rsi
+	xorq	%rdx, %rdx
+	xorq	%rax, %rax
+	movb	$0x1, %dl
+	movb	$0x3, %al				/* sys_read */
+	syscall
+	jc		err
+	xorq	%rax, %rax
+	movb	$0x6, %al				/* sys_close */
+	syscall
+	xorq	%rax, %rax
+	movb	(%rsi), %al
+	subb	$0x30, %al
+	retq
+
+err:
+	xorq	%rax, %rax
+	movb	$0xfe, %al
+	retq
+
+.data
+	f_cmd:		.asciz	"apm -b >/tmp/lowbat.status"
+	st_file:	.asciz	"/tmp/lowbat.status"
+	buff:		.byte	0x0, 0x0

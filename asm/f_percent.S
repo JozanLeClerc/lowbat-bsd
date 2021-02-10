@@ -38,27 +38,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * lowbat: src/n_notify.c
- * Wed Feb 10 19:21:25 CET 2021
+ * lowbat: asm/f_percent.S
+ * Wed Feb 10 18:23:30 CET 2021
  * Joe
  */
 
-#include "n_notify.h"
+.text
+.extern system
+.extern atoi
+.globl f_percent
 
-void
-n_notify
-(const char		head[],
- const char		body[],
- NotifyUrgency	u,
- int32_t		t)
-{
-	NotifyNotification *n;
+f_percent:
+	movq	$f_cmd, %rdi
+	callq	system
+	movq	$pr_file, %rdi
+	xorq	%rsi, %rsi
+	xorq	%rax, %rax
+	movb	$0x5, %al				/* sys_open */
+	syscall
+	jc		err
+	movq	%rax, %rdi
+	movq	$buff, %rsi
+	xorq	%rdx, %rdx
+	xorq	%rax, %rax
+	movb	$0x3, %dl
+	movb	$0x3, %al				/* sys_read */
+	syscall
+	jc		err
+	xorq	%rax, %rax
+	movb	$0x6, %al				/* sys_close */
+	syscall
+	xorq	%rax, %rax
+	movq	%rsi, %rdi
+	callq	atoi
+	retq
 
-	notify_init(JO_LOWBAT);
-	n = notify_notification_new(head, body, NULL);
-	notify_notification_set_urgency(n, u);
-	notify_notification_set_timeout(n, t);
-	notify_notification_show(n, NULL);
-	notify_uninit();
-	n = NULL;
-}
+err:
+	movq	$0xfe, %rax
+	retq
+
+.data
+	f_cmd:		.asciz	"apm -l >/tmp/lowbat.percent"
+	pr_file:	.asciz	"/tmp/lowbat.percent"
+	buff:		.byte	0x0, 0x0, 0x0, 0x0

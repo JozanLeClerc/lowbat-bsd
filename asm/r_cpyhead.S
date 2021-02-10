@@ -38,27 +38,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * lowbat: src/n_notify.c
- * Wed Feb 10 19:21:25 CET 2021
+ * lowbat: asm/r_cpyhead.S
+ * Wed Feb 10 18:25:22 CET 2021
  * Joe
  */
 
-#include "n_notify.h"
+.text
+.extern sprintf
+.globl r_cpyhead
 
-void
-n_notify
-(const char		head[],
- const char		body[],
- NotifyUrgency	u,
- int32_t		t)
-{
-	NotifyNotification *n;
+r_cpyhead:
+	movq	$buff, %rdi
+	movq	$n_head, %rsi
+	xorq	%rax, %rax
+	callq	sprintf
+	movq	$buff, %rax
+	retq
 
-	notify_init(JO_LOWBAT);
-	n = notify_notification_new(head, body, NULL);
-	notify_notification_set_urgency(n, u);
-	notify_notification_set_timeout(n, t);
-	notify_notification_show(n, NULL);
-	notify_uninit();
-	n = NULL;
-}
+.data
+	n_head:	.asciz	"Low battery: %d%%"
+
+.bss
+	buff:	.zero 0x11
