@@ -23,6 +23,7 @@ A_SRCS_DIR	 = asm
 PREFIX		?= /usr/local
 BINPREFIX	?= ${PREFIX}/bin
 MANPREFIX	?= ${PREFIX}/share/man
+RCPREFIX	?= ${PREFIX}/etc/rc.d
 
 C_SRCS		+= ${C_SRCS_DIR}/n_speak.c
 C_SRCS		+= ${C_SRCS_DIR}/n_notify.c
@@ -48,8 +49,6 @@ CFLAGS		+= -Wno-c99-extensions
 CFLAGS		+= -Wno-variadic-macros
 CFLAGS		+= -Werror
 CFLAGS		+= -pedantic
-# CFLAGS		+= -O0 -glldb
-# CFLAGS		+= -fsanitize=address
 
 CINCS		+= -I/usr/local/include
 CINCS		+= -I/usr/local/include/glib-2.0
@@ -67,9 +66,6 @@ LDLIBS		+= -lc
 TARGET		 = lowbat
 
 AS			 = as
-# ASFLAGS	 = -f elf64
-# ASFLAGS	+= -p gas
-# ASFLAGS	+= -g
 
 LDFLAGS		?=
 LDLIBS		 = ${LDFLAGS}
@@ -78,16 +74,18 @@ LDLIBS		+= -lnotify
 LDLIBS		+= -lespeak
 
 SHELL		:= /bin/sh
-RM			 = rm -f
-MKDIR		 = mkdir -p
-CP			 = cp -pf
-MV			 = mv
-SED			 = sed
+RM			:= rm -f
+MKDIR		:= mkdir -p
+MV			:= mv
+SED			:= sed
+GZIP		:= gzip
+GUNZIP		:= gunzip
+INSTALL		:= install
 
 .SUFFIXES: .S .c .S.o .c.o
 
 .S.S.o:
-	${AS} ${ASFLAGS} -o ${.TARGET} ${.IMPSRC}
+	${AS} -o ${.TARGET} ${.IMPSRC}
 
 .c.c.o:
 	${CC} -c ${CFLAGS} ${CINCS} -o ${.TARGET} ${.IMPSRC}
@@ -106,9 +104,13 @@ all:
 
 install: all
 	${MKDIR} "${DESTDIR}${BINPREFIX}"
-	${CP} ${TARGET} "${DESTDIR}${BINPREFIX}"
+	${INSTALL} -m0555 ${TARGET} "${DESTDIR}${BINPREFIX}/${TARGET}"
+	${GZIP} man/${TARGET}.1
 	${MKDIR} "${DESTDIR}${MANPREFIX}"/man1
-	${CP} man/${TARGET}.1 "${DESTDIR}${MANPREFIX}"/man1
+	${INSTALL} -m0444 man/${TARGET}.1.gz "${DESTDIR}${MANPREFIX}"/man1/${TARGET}.1.gz
+	${GUNZIP} man/${TARGET}.1.gz
+	${MKDIR} "${DESTDIR}${RCPREFIX}"
+	${INSTALL} -m0555 rc.d/${TARGET} "${DESTDIR}${RCPREFIX}/${TARGET}"
 
 uninstall:
 	${RM} "${DESTDIR}${BINPREFIX}"/${TARGET}
