@@ -57,6 +57,28 @@ speak:
 	movq	(%rbx,0x8,0x2), %rdi
 	callq	n_speak
 
+sleepabit:
+	movq	$0x14, %rdi
+	callq	sleep				/* sleep 20 seconds before next check/notification */
+	jmp		bigloop
+
+sleepalot:
+	movq	$0xf0, %rdi
+	callq	sleep				/* sleep 240s (4m) if it's fine */
+	jmp		bigloop
+
+return:
+	xorq	%rax, %rax
+	retq
+
+err:
+	movq	$0x2, %rdi			/* stderr */
+	leaq	(rel $errmsg), %rsi
+	movq	$errlen, %rdx
+	movq	$0x4, %rax
+	syscall						/* write error message on stderr */
+	xorq	%rax, %rax
+	retq
 
 ;; section .text
 ;; 	extern sleep
@@ -100,31 +122,31 @@ speak:
 ;; 	mov		rdi, [rbx + 0x8 * 0x2]
 ;; 	call	jo_n_speak
 
-sleepabit:
-	mov		rdi, 0x14
-	call	sleep				; sleep 20 seconds before next check/notification
-	jmp		bigloop
+;; sleepabit:
+;; 	mov		rdi, 0x14
+;; 	call	sleep				; sleep 20 seconds before next check/notification
+;; 	jmp		bigloop
 
-sleepalot:
-	mov		rdi, 0xf0
-	call	sleep				; sleep 240s (4m) if it's fine
-	jmp		bigloop
+;; sleepalot:
+;; 	mov		rdi, 0xf0
+;; 	call	sleep				; sleep 240s (4m) if it's fine
+;; 	jmp		bigloop
 
-return:
-	xor		rax, rax
-	retq
+;; return:
+;; 	xor		rax, rax
+;; 	retq
 
-err:
-	mov		rdi, 0x2			; stderr
-	lea		rsi, [rel errmsg]
-	mov		rdx, errlen
-	mov		rax, 0x4
-	syscall						; write error message on stderr
-	xor		rax, rax
-	retq
+;; err:
+;; 	mov		rdi, 0x2			; stderr
+;; 	lea		rsi, [rel errmsg]
+;; 	mov		rdx, errlen
+;; 	mov		rax, 0x4
+;; 	syscall						; write error message on stderr
+;; 	xor		rax, rax
+;; 	retq
 
-section .data
-	n_body:	db "Please plug in computer", 0x0
-	fmt:	db "%s", 0xa, 0x0
-	errmsg:	db "Failed to read battery informations", 0xa, 0x0
+.data
+	n_body:	.asciz "Please plug in computer"
+	fmt:	.asciz "%s", 0xa
+	errmsg:	.asciz "Failed to read battery informations", 0xa
 	errlen:	equ $ - errmsg
